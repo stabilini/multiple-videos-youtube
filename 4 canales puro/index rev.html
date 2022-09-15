@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!-- INFORMACIÓN IMPORTANTE SOBRE ESTA PAGINA
+Esta página está creada en HTML y JS, por lo tanto su código fuente se puede copiar y usar.
+No hay ningún tipo de restricción, lo ofrezo libremente para que cada uno haga lo que quiera.
+Lo único que te pido es que seas noble y no te atribuyas la autoría.
+
+No me responsabilizo por un mal uso de este código, ni por los daños que pueda ocasionar a dispositivos.
+
+Cualquier duda, consulta, aclaración o pedido de modificación me encuentran en Twitter @NStabilini
+
+Si quieren colaborar en esta noble causa (?) pueden enviar eth a la siguiente dirección:
+
+O dolarucos por PayPal a:
+
+
+
+Instrucciones:
+La página divide la pantalla en cuatro partes, en cada una se carga un video de youtube.
+Presionando las letras Q, W, A y S se abre un cuadro para pegar el link de youtube en el cuadrante correspondiente:
+Q - superior izquierdo / W - superior derecho
+A - inferior izquierdo / S - inferior derecho
+Presionando H aparece una breve ayuda.
+Presionando F se maximiza (y se minimiza si está maximizado) el video que tiene sonido.
+
+El sonido se controla con el mouse: se activa el sonido por donde pasa el puntero del mouse (y se desactivan los otros 3)
+
+La págna tiene un pequeño márgen negro para poder mover el mouse sin afectar el sonido, por ejemplo:
+
+-->
+
+<html lang="es">
+
+<head>
+  <script>
+
+    // funcion para guardar las cookies
+    function setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // funcion para recuperar cookies
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    //funcion para los eventos del teclado
+    function manejador(elEvento) {
+      var evento = elEvento || window.event;
+      var caracter = evento.charCode || evento.keyCode;
+      switch (caracter) {
+        case 113: // al apretar tecla Q
+          var video1 = prompt("Pega el link de Youtube para el video superior izquierdo");
+          document.getElementById('video1').src = "https://www.youtube.com/embed/" + YouTubeGetID(video1) + "?wmode=opaque&autoplay=1&enablejsapi=1";
+          setCookie("video1", YouTubeGetID(video1), 360);
+          break;
+        case 119: // al apretar tecla W
+          var video2 = prompt("Pega el link de Youtube para el video superior derecho");
+          document.getElementById('video2').src = "https://www.youtube.com/embed/" + YouTubeGetID(video2) + "?wmode=opaque&autoplay=1&enablejsapi=1";
+          setCookie("video2", YouTubeGetID(video2), 360);
+          break;
+        case 97: // al apretar tecla A
+          var video3 = prompt("Pega el link de Youtube para el video inferior izquierdo");
+          document.getElementById('video3').src = "https://www.youtube.com/embed/" + YouTubeGetID(video3) + "?wmode=opaque&autoplay=1&enablejsapi=1";
+          setCookie("video3", YouTubeGetID(video3), 360);
+          break;
+        case 115: // al apretar tecla S
+          var video4 = prompt("Pega el link de Youtube para el video inferior derecho");
+          document.getElementById('video4').src = "https://www.youtube.com/embed/" + YouTubeGetID(video4) + "?wmode=opaque&autoplay=1&enablejsapi=1";
+          setCookie("video4", YouTubeGetID(video4), 360);
+          break;
+        case 104: // al apretar tecla H
+          alert("Entrá a Youtube y copiá el link de la barra de direcciones.\nPresioná Q, W, A o S para pegar el link en cada cuadrante.\nMové el mouse sobre los cuadrantes para controlar audio.\nPresioná M para activar o desactivar el uso del mouse en el sonido.\nHTML elástico, se adapta a cualquier ventana.\nSugerencias, mejoras, consultas: @NStabilini en Twitter.");
+          break;
+        case 109: // al apretar tecla J activa o desactiva el uso del mouse
+          if (getCookie("Mouse") == 0) { setCookie("Mouse", 1, 360) } else { setCookie("Mouse", 0, 360) };
+          break;
+      }
+      // la siguiente línea es para porbar teclas (normalmente no se usa)
+      //alert("El carácter pulsado es: " + String.fromCharCode(caracter) + caracter);
+    }
+
+    document.onkeypress = manejador;
+
+    // funcion para limpiar el link de youtube
+    function YouTubeGetID(url) {
+      var ID = '';
+      url = url.replace(/(>|<)/gi, '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+      if (url[2] !== undefined) {
+        ID = url[2].split(/[^0-9a-z_\-]/i);
+        ID = ID[0];
+      } else {
+        ID = url;
+      }
+      return ID;
+    }
+
+  </script>
+  <meta charset="utf-8">
+  <title>Cuatro canales</title>
+  <style type="text/css">
+    /* fondo negro */
+    body {
+      background-color: #000000;
+    }
+    
+    /* ubicación de cada reproductor, el 1% es para poder salir por los bordes sin afectar el sonido */
+    /* Video 1 */
+    .uno iframe {
+      position: absolute;
+      top: 1%;
+      left: 1%;
+      width: 49%;
+      height: 49%;
+    }
+
+    /* Video 2 */
+    .dos iframe {
+      position: absolute;
+      top: 1%;
+      left: 50%;
+      width: 49%;
+      height: 49%;
+    }
+
+    /* Video 3 */
+    .tre iframe {
+      position: absolute;
+      top: 50%;
+      left: 1%;
+      width: 49%;
+      height: 49%;
+    }
+
+    /* Video 4 */
+    .cua iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 49%;
+      height: 49%;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="uno"><iframe id="video1"
+      src="https://www.youtube.com/embed/i5eifZ01hls?wmode=opaque&autoplay=1&amp;enablejsapi=1" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe></div> <!-- Video 1 -->
+  <div class="dos"><iframe id="video2"
+      src="https://www.youtube.com/embed/-1xif50QMr4?wmode=opaque&autoplay=1&amp;enablejsapi=1" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe></div> <!-- Video 2 -->
+  <div class="tre"><iframe id="video3"
+      src="https://www.youtube.com/embed/GMuuLEF0a84?wmode=opaque&autoplay=1&amp;enablejsapi=1" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe></div> <!-- Video 3 -->
+  <div class="cua"><iframe id="video4"
+      src="https://www.youtube.com/embed/S9sHGsmxkr8?wmode=opaque&autoplay=1&amp;enablejsapi=1" frameborder="0"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe></div> <!-- Video 4 -->
+  <!-- el siguiente script carga los videos de las cookies (si es que hay) después de cargar la página, sino no anda -->
+  <script>
+    window.onload = function () {
+      if (getCookie('video1')) { document.getElementById('video1').src = "https://www.youtube.com/embed/" + getCookie('video1') + "?wmode=opaque&autoplay=1&enablejsapi=1"; }
+      if (getCookie('video2')) { document.getElementById('video2').src = "https://www.youtube.com/embed/" + getCookie('video2') + "?wmode=opaque&autoplay=1&enablejsapi=1"; }
+      if (getCookie('video3')) { document.getElementById('video3').src = "https://www.youtube.com/embed/" + getCookie('video3') + "?wmode=opaque&autoplay=1&enablejsapi=1"; }
+      if (getCookie('video4')) { document.getElementById('video4').src = "https://www.youtube.com/embed/" + getCookie('video4') + "?wmode=opaque&autoplay=1&enablejsapi=1"; }
+    }
+  </script>
+  <!-- el siguiente script carga la api de youtube -->
+  <script async src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    var $$ = function (tagname) { return document.getElementsByTagName(tagname); }
+
+    function onYouTubeIframeAPIReady() {    // definimos la función
+      var videos = $$('iframe'),          // define variable con elementos iframes
+        players = [],                   // un array donde metemos cada instancia de los reproductores de youtube
+        playingID = null;               // aquí guardamos el video actualmente en reproducción
+      for (var i = 0; i < videos.length; i++) {       // para cada uno de los iframes
+        var currentIframeID = videos[i].id;         // obtenemos el ID del iframe
+        players[currentIframeID] = new YT.Player(currentIframeID);      // guardamos en el array la instancia (la key de cada elemento será el ID del iframe)
+        videos[i].onmouseover = function (e) {                           // asignamos un callback para este evento
+          if (getCookie("Mouse") == 1) {									// permite o no usar el mouse
+            var currentHoveredElement = e.target;                   // para el elemento sobre el cual se encuentra el mouse
+            if (playingID) { players[playingID].mute(); }            // no se que corno hace esto pero funciona así ;)
+            players[currentHoveredElement.id].unMute();             // des-silencia el elemento sobre el cual se encuentra el mouse
+            playingID = currentHoveredElement.id;                   // asigna el ID del elemento sobre el cual está el mouse a playingID
+          }
+        };
+      }
+    }
+    onYouTubeIframeAPIReady();
+  </script>
+</body>
+
+</html>
