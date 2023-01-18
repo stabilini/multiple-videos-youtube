@@ -1,4 +1,4 @@
-# Multichannels for Youtube
+# Multiple videos for Youtube
 
 Playing around with Youtube api
 
