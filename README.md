@@ -1,6 +1,6 @@
 # Multiple videos for Youtube
 
-Playing around with Youtube api
+Playing around with Youtube api I've created this small app... it shows four youtube channels at the same time.
 
 ## Usage
 
